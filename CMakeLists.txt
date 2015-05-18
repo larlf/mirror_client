@@ -12,9 +12,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(test_src
-	src/main.cpp
-	src/test1.h
-	src/test1.cpp
+	test/main.cpp
+	test/test1.h
+	test/test1.cpp
 )
 link_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/lib ${PROJECT_BINARY_DIR}/../bin)
 include_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/include)
