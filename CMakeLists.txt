@@ -16,8 +16,8 @@ set(test_src
 	src/test1.h
 	src/test1.cpp
 )
-link_directories(${PROJECT_SOURCE_DIR}/deps/lib ${PROJECT_BINARY_DIR}/../bin)
-include_directories(${PROJECT_SOURCE_DIR}/deps/include)
+link_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/lib ${PROJECT_BINARY_DIR}/../bin)
+include_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/include)
 add_executable(3dtest ${test_src})
 target_link_libraries(3dtest
 	winmm.lib
