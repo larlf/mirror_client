@@ -20,7 +20,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 class Test1 : public testing::Test
 {
-
+public:
+	static void init();
+	static void display();
 };
 
 
