@@ -25,5 +25,6 @@ target_link_libraries(3dtest
 	glu32.lib
 	gtestd.lib
 	glfw3.lib
+    freeglutd.lib
 )
 

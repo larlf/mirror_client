@@ -5,6 +5,7 @@
 #include <gl/gl.h>
 #include <GLFW/glfw3.h>
 #include <gtest/gtest.h>
+#include <GL/freeglut.h>
 
 static void error_callback(int error, const char* description)
 {
