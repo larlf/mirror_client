@@ -1,4 +1,4 @@
-project(test)
+project(MagicMirror)
 
 #版本检查
 cmake_minimum_required(VERSION 2.6)
@@ -13,13 +13,13 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(test_src
 	test/main.cpp
-	test/test1.h
-	test/test1.cpp
+	test/opengl_test.h
+	test/opengl_test.cpp
 )
 link_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/lib ${PROJECT_BINARY_DIR}/../bin)
 include_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/include)
-add_executable(3dtest ${test_src})
-target_link_libraries(3dtest
+add_executable(mm_test ${test_src})
+target_link_libraries(mm_test
 	winmm.lib
 	opengl32.lib
 	glu32.lib

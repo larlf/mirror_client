@@ -1,4 +1,4 @@
-#include "test1.h"
+#include "opengl_test.h"
 
 
 TEST_F(Test1, test1)

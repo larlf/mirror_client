@@ -2,7 +2,7 @@
 #include <gl/gl.h>
 #include <GLFW/glfw3.h>
 #include <gtest/gtest.h>
-#include "test1.h"
+#include "opengl_test.h"
 
 int main(int argc, char** argv)
 {
