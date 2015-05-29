@@ -34,9 +34,10 @@ include_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/include)
 add_executable(mm_test ${test_src})
 target_link_libraries(mm_test
 	winmm.lib
+	gtest.lib
 	opengl32.lib
 	glu32.lib
-	gtest.lib
+	glew32d.lib
     freeglutd.lib
     mm_core.lib
 )
