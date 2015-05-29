@@ -23,14 +23,15 @@ const GLuint NumVertices = 6;
 class Test1 : public testing::Test
 {
 public:
-	static GLuint VAOs[];
-	static GLuint Buffers[];
+	static GLuint *VAOs;
+	static GLuint *Buffers;
 
 	static const GLchar* ReadShader(const char* filename);
 	static GLuint LoadShaders(ShaderInfo* shaders);
 
 	static void init();
 	static void display();
+	static void display2();
 };
 
 

@@ -1,23 +1,53 @@
 #include "opengl_test.h"
 
 
-TEST_F(Test1, test1)
+//TEST_F(Test1, test1)
+//{
+//	int argc = 0;
+//	char* argv = {};
+//	glutInit(&argc, &argv);
+//	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+//	glutInitWindowSize(800, 600);
+//	glutInitWindowPosition(100, 100);
+//	//glutInitContextVersion(4, 3);
+//	//glutInitContextProfile(GLUT_CORE_PROFILE);
+//	glutCreateWindow("Test");
+//
+//	Test1::init();
+//
+//	glutDisplayFunc(Test1::display);
+//	glutMainLoop();
+//}
+
+TEST_F(Test1, test2)
 {
 	int argc = 0;
 	char* argv = {};
 	glutInit(&argc, &argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(800, 600);
-	glutInitWindowPosition(100, 100);
-	//glutInitContextVersion(4, 3);
-	//glutInitContextProfile(GLUT_CORE_PROFILE);
-	glutCreateWindow("Test");
+	glutInitDisplayMode(GLUT_RGBA);
+	glutInitWindowSize(512, 512);
+	glutInitContextProfile(GLUT_CORE_PROFILE);
+	glutCreateWindow(&argv[0]);
+	if (glewInit()) {
+		std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
-	Test1::init();
+	const GLubyte* byteGlVersion = glGetString(GL_VERSION);
+	const GLubyte* byteGlVendor = glGetString(GL_VENDOR);
+	const GLubyte* byteGlRenderer = glGetString(GL_RENDERER);
+	const GLubyte* byteSLVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-	glutDisplayFunc(Test1::display);
+	std::cout << "OpenGL version: " << byteGlVersion << std::endl;
+	std::cout << "GL_VENDOR: " << byteGlVendor << std::endl;
+	std::cout << "GL_RENDERER: " << byteGlRenderer << std::endl;
+	std::cout << "GLSL version: " << byteSLVersion << std::endl;
+
+	init();
+	glutDisplayFunc(display2);
 	glutMainLoop();
 }
+
 
 void Test1::init()
 {
@@ -172,7 +202,15 @@ GLuint Test1::LoadShaders(ShaderInfo* shaders)
 	return program;
 }
 
-GLuint Test1::Buffers[NumBuffers];
+void Test1::display2()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBindVertexArray(VAOs[Triangles]);
+	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+	glFlush();
+}
 
-GLuint Test1::VAOs[NumVAOs];
+GLuint *Test1::Buffers=new GLuint[NumBuffers];
+
+GLuint *Test1::VAOs=new GLuint[NumVAOs];
 
