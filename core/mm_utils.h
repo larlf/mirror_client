@@ -1,7 +1,8 @@
 ﻿#ifndef MIRROR_UI_UTILS
 #define MIRROR_UI_UTILS
 
-#include "mirror.utils.h"
+#include "mm_const.h"
+#include <iostream>
 
 
 //____________________________________________________________________________

@@ -1,6 +1,5 @@
 #include <windows.h>  
 #include <gl/gl.h>
-#include <GLFW/glfw3.h>
 #include <gtest/gtest.h>
 #include "opengl_test.h"
 
