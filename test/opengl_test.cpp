@@ -24,26 +24,20 @@ TEST_F(Test1, test2)
 	int argc = 0;
 	char* argv = {};
 	glutInit(&argc, &argv);
-	glutInitDisplayMode(GLUT_RGBA);
+
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(512, 512);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+
 	glutCreateWindow(&argv[0]);
-	if (glewInit()) {
+	if (glewInit())
+	{
 		std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
-	const GLubyte* byteGlVersion = glGetString(GL_VERSION);
-	const GLubyte* byteGlVendor = glGetString(GL_VENDOR);
-	const GLubyte* byteGlRenderer = glGetString(GL_RENDERER);
-	const GLubyte* byteSLVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-	std::cout << "OpenGL version: " << byteGlVersion << std::endl;
-	std::cout << "GL_VENDOR: " << byteGlVendor << std::endl;
-	std::cout << "GL_RENDERER: " << byteGlRenderer << std::endl;
-	std::cout << "GLSL version: " << byteSLVersion << std::endl;
-
 	init();
+
 	glutDisplayFunc(display2);
 	glutMainLoop();
 }
@@ -52,6 +46,8 @@ TEST_F(Test1, test2)
 void Test1::init()
 {
 	glGenVertexArrays(NumVAOs, VAOs);
+	std::cout << "Num:" << NumVAOs << std::endl;
+	std::cout << "ArraySize:" << sizeof(VAOs) << std::endl;
 	glBindVertexArray(VAOs[Triangles]);
 	GLfloat vertices[NumVertices][2] = {
 		{ -0.90, -0.90 }, // Triangle 1
@@ -65,15 +61,16 @@ void Test1::init()
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
 		vertices, GL_STATIC_DRAW);
-	ShaderInfo shaders[] = {
-		{ GL_VERTEX_SHADER, "triangles.vert" },
-		{ GL_FRAGMENT_SHADER, "triangles.frag" },
-		{ GL_NONE, NULL }
-	};
-	GLuint program = Test1::LoadShaders(shaders);
-	glUseProgram(program);
-	glVertexAttribPointer(vPosition, 2, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
+
+	//ShaderInfo shaders[] = {
+	//	{ GL_VERTEX_SHADER, "triangles.vert" },
+	//	{ GL_FRAGMENT_SHADER, "triangles.frag" },
+	//	{ GL_NONE, NULL }
+	//};
+	//GLuint program = Test1::LoadShaders(shaders);
+	//glUseProgram(program);
+
+	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray(vPosition);
 }
 
@@ -204,10 +201,12 @@ GLuint Test1::LoadShaders(ShaderInfo* shaders)
 
 void Test1::display2()
 {
+	glClearColor(0.5, 0.5, 0.5, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glBindVertexArray(VAOs[Triangles]);
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-	glFlush();
+
+	glutSwapBuffers();
 }
 
 GLuint *Test1::Buffers=new GLuint[NumBuffers];
