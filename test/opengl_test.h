@@ -14,10 +14,6 @@ typedef struct {
 
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
-enum VAO_IDs { Triangles, NumVAOs };
-enum Buffer_IDs { ArrayBuffer, NumBuffers };
-enum Attrib_IDs { vPosition = 0 };
-
 const GLuint NumVertices = 6;
 
 class Test1 : public testing::Test

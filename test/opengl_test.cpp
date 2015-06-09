@@ -45,10 +45,10 @@ TEST_F(Test1, test2)
 
 void Test1::init()
 {
-	glGenVertexArrays(NumVAOs, VAOs);
-	std::cout << "Num:" << NumVAOs << std::endl;
+	glGenVertexArrays(1, VAOs);
+	std::cout << "Num:" << 1 << std::endl;
 	std::cout << "ArraySize:" << sizeof(VAOs) << std::endl;
-	glBindVertexArray(VAOs[Triangles]);
+	glBindVertexArray(VAOs[0]);
 	GLfloat vertices[NumVertices][2] = {
 		{ -0.90, -0.90 }, // Triangle 1
 		{ 0.85, -0.90 },
@@ -57,8 +57,8 @@ void Test1::init()
 		{ 0.90, 0.90 },
 		{ -0.85, 0.90 }
 	};
-	glGenBuffers(NumBuffers, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
+	glGenBuffers(1, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
 		vertices, GL_STATIC_DRAW);
 
@@ -70,8 +70,8 @@ void Test1::init()
 	//GLuint program = Test1::LoadShaders(shaders);
 	//glUseProgram(program);
 
-	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(0);
 }
 
 void Test1::display()
@@ -203,13 +203,13 @@ void Test1::display2()
 {
 	glClearColor(0.5, 0.5, 0.5, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBindVertexArray(VAOs[Triangles]);
+	glBindVertexArray(VAOs[0]);
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	glutSwapBuffers();
 }
 
-GLuint *Test1::Buffers=new GLuint[NumBuffers];
+GLuint *Test1::Buffers=new GLuint[1];
 
-GLuint *Test1::VAOs=new GLuint[NumVAOs];
+GLuint *Test1::VAOs=new GLuint[1];
 
