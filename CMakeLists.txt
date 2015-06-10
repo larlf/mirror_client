@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.6)
 
 #设置Debug版的编译参数，Windows下只支持Debug版
 set(CMAKE_CXX_FLAGS				"-DWIN32 /MD /EHsc -D_WIN32_WINNT=0x0501 -DWINDOWS")
-set(CMAKE_CXX_FLAGS_DEBUG		"/MDd -DDEBUG /Z7")
+set(CMAKE_CXX_FLAGS_DEBUG		"/MDd -DDEBUG /ZI /Od")
 
 #设置输出路径
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

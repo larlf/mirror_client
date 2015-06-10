@@ -62,13 +62,13 @@ void Test1::init()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
 		vertices, GL_STATIC_DRAW);
 
-	//ShaderInfo shaders[] = {
-	//	{ GL_VERTEX_SHADER, "triangles.vert" },
-	//	{ GL_FRAGMENT_SHADER, "triangles.frag" },
-	//	{ GL_NONE, NULL }
-	//};
-	//GLuint program = Test1::LoadShaders(shaders);
-	//glUseProgram(program);
+	ShaderInfo shaders[] = {
+		{ GL_VERTEX_SHADER, "../res/test.vert" },
+		{ GL_FRAGMENT_SHADER, "../res/test.frag" },
+		{ GL_NONE, NULL }
+	};
+	GLuint program = Test1::LoadShaders(shaders);
+	glUseProgram(program);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray(0);
@@ -91,17 +91,13 @@ void Test1::display()
 
 const GLchar* Test1::ReadShader(const char* filename)
 {
-#ifdef WIN32
 	FILE* infile;
 	fopen_s(&infile, filename, "rb");
-#else
-	FILE* infile = fopen(filename, "rb");
-#endif // WIN32
+	//infile=fopen("D:\\temp\\test.vert", "a");
+	std::cout << "File : " << infile << std::endl;
 
 	if (!infile) {
-#ifdef _DEBUG
 		std::cerr << "Unable to open file '" << filename << "'" << std::endl;
-#endif /* DEBUG */
 		return NULL;
 	}
 
