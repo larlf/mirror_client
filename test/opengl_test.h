@@ -14,13 +14,13 @@ typedef struct {
 
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
-const GLuint NumVertices = 6;
-
 class Test1 : public testing::Test
 {
 public:
-	static GLuint *VAOs;
-	static GLuint *Buffers;
+	static GLuint *VAO1;
+	static GLuint *VAO2;
+	static GLuint *Buffer1;
+	static GLuint *Buffer2;
 
 	static const GLchar* ReadShader(const char* filename);
 	static GLuint LoadShaders(ShaderInfo* shaders);

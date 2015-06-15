@@ -45,40 +45,82 @@ TEST_F(Test1, test2)
 
 void Test1::init()
 {
-	glGenVertexArrays(1, VAOs);
+	glGenVertexArrays(1, VAO1);
+	glGenVertexArrays(10, VAO2);
 	std::cout << "Num:" << 1 << std::endl;
-	std::cout << "ArraySize:" << sizeof(VAOs) << std::endl;
-	glBindVertexArray(VAOs[0]);
-	GLfloat vertices[NumVertices][2] = {
-		{ -0.90, -0.90 }, // Triangle 1
-		{ 0.85, -0.90 },
-		{ -0.90, 0.85 },
-		{ 0.90, -0.85 }, // Triangle 2
-		{ 0.90, 0.90 },
-		{ -0.85, 0.90 }
-	};
-	glGenBuffers(1, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
-		vertices, GL_STATIC_DRAW);
+	std::cout << "ArraySize:" << sizeof(VAO1) << std::endl;
 
-	ShaderInfo shaders[] = {
-		{ GL_VERTEX_SHADER, "../res/test.vert" },
-		{ GL_FRAGMENT_SHADER, "../res/test.frag" },
-		{ GL_NONE, NULL }
-	};
-	GLuint program = Test1::LoadShaders(shaders);
-	glUseProgram(program);
+	glBindVertexArray(VAO1[0]);
+	{
+		GLfloat vertices[6][2] = {
+			{ -0.90, -0.90 }, // Triangle 1
+			{ 0.85, -0.80 },
+			{ -0.90, 0.85 },
+			{ 0.90, -0.85 }, // Triangle 2
+			{ 0.90, 0.90 },
+			{ -0.85, 0.90 }
+		};
+		glGenBuffers(1, Buffer1);
+		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-	glEnableVertexAttribArray(0);
+		//ShaderInfo shaders[] = {
+		//	{ GL_VERTEX_SHADER, "../res/test.vert" },
+		//	{ GL_FRAGMENT_SHADER, "../res/test.frag" },
+		//	{ GL_NONE, NULL }
+		//};
+		//GLuint program = Test1::LoadShaders(shaders);
+		//glUseProgram(program);
+
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glEnableVertexAttribArray(0);
+
+	}
+
+	glBindVertexArray(VAO2[3]);
+	{
+		GLfloat vertices[6][2] = {
+			{ -1.50, -0.90 }, // Triangle 1
+			{ 0.85, -0.40 },
+			{ -0.90, 0.85 },
+			{ 0.90, -0.85 }, // Triangle 2
+			{ 0.90, 0.90 },
+			{ -0.85, 0.90 }
+		};
+		glGenBuffers(1, Buffer1);
+		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		//ShaderInfo shaders[] = {
+		//	{ GL_VERTEX_SHADER, "../res/test.vert" },
+		//	{ GL_FRAGMENT_SHADER, "../res/test.frag" },
+		//	{ GL_NONE, NULL }
+		//};
+		//GLuint program = Test1::LoadShaders(shaders);
+		//glUseProgram(program);
+
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glEnableVertexAttribArray(0);
+	}
+}
+
+void Test1::display2()
+{
+	glClearColor(0.5, 0.5, 0.5, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glBindVertexArray(VAO1[0]);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glutSwapBuffers();
 }
 
 void Test1::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
+	std::cout << "run..." << std::endl;
 
+	glColor3f(1.0, 1.0, 1.0);
 	glBegin(GL_POLYGON);
 	glVertex3f(0.25, 0.25, 0.0);
 	glVertex3f(0.75, 0.25, 0.0);
@@ -195,17 +237,8 @@ GLuint Test1::LoadShaders(ShaderInfo* shaders)
 	return program;
 }
 
-void Test1::display2()
-{
-	glClearColor(0.5, 0.5, 0.5, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glBindVertexArray(VAOs[0]);
-	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-
-	glutSwapBuffers();
-}
-
-GLuint *Test1::Buffers=new GLuint[1];
-
-GLuint *Test1::VAOs=new GLuint[1];
+GLuint * Test1::Buffer2=new GLuint[10];
+GLuint * Test1::VAO2 = new GLuint[10];
+GLuint *Test1::Buffer1=new GLuint[1];
+GLuint *Test1::VAO1=new GLuint[1];
 
