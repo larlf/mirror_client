@@ -28,6 +28,7 @@ TEST_F(Test1, test2)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(512, 512);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+	glutReshapeFunc(changeSize);
 
 	glutCreateWindow(&argv[0]);
 	if (glewInit())
@@ -46,6 +47,7 @@ TEST_F(Test1, test2)
 void Test1::init()
 {
 	glGenVertexArrays(1, VAOs);
+	checkGLError("glGenVertexArrays()");
 	std::cout << "Num:" << 1 << std::endl;
 	std::cout << "ArraySize:" << sizeof(VAOs) << std::endl;
 	glBindVertexArray(VAOs[0]);
@@ -203,6 +205,21 @@ void Test1::display2()
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	glutSwapBuffers();
+}
+
+void Test1::checkGLError(const std::string& info)
+{
+	GLenum errorNum;
+	while ((errorNum = glGetError()) != GL_NO_ERROR)
+	{
+		char* msg = (char*)gluErrorString(errorNum);
+		std::cout << "Error : " << msg << " @ " << info << std::endl;
+	}
+}
+
+void Test1::changeSize(GLsizei width, GLsizei height)
+{
+	LOG_DEBUG("Change Size : " << width << "," << height);
 }
 
 GLuint *Test1::Buffers=new GLuint[1];
