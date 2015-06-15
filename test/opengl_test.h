@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <core/mm_utils.h>
 
 typedef struct {
 	GLenum       type;
@@ -28,6 +29,8 @@ public:
 	static void init();
 	static void display();
 	static void display2();
+	static void checkGLError(const std::string& info);
+	static void changeSize(GLsizei width, GLsizei height);
 };
 
 

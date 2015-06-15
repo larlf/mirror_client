@@ -39,6 +39,7 @@ target_link_libraries(mm_test
 	glu32.lib
 	glew32d.lib
     freeglutd.lib
+    iconv.lib
     mm_core.lib
 )
 

@@ -36,6 +36,8 @@ TEST_F(Test1, test2)
 		exit(EXIT_FAILURE);
 	}
 
+	glutReshapeFunc(changeSize);
+
 	init();
 
 	glutDisplayFunc(display2);
@@ -47,6 +49,8 @@ void Test1::init()
 {
 	glGenVertexArrays(1, VAO1);
 	glGenVertexArrays(10, VAO2);
+	checkGLError("glGenVertexArrays()");
+
 	std::cout << "Num:" << 1 << std::endl;
 	std::cout << "ArraySize:" << sizeof(VAO1) << std::endl;
 
@@ -237,8 +241,23 @@ GLuint Test1::LoadShaders(ShaderInfo* shaders)
 	return program;
 }
 
+void Test1::checkGLError(const std::string& info)
+{
+	GLenum errorNum;
+	while ((errorNum = glGetError()) != GL_NO_ERROR)
+	{
+		char* msg = (char*)gluErrorString(errorNum);
+		std::cout << "Error : " << msg << " @ " << info << std::endl;
+	}
+}
+
+void Test1::changeSize(GLsizei width, GLsizei height)
+{
+	LOG_DEBUG("Change Size : " << width << "," << height);
+	glViewport(0, 0, width, height);
+}
+
 GLuint * Test1::Buffer2=new GLuint[10];
 GLuint * Test1::VAO2 = new GLuint[10];
 GLuint *Test1::Buffer1=new GLuint[1];
 GLuint *Test1::VAO1=new GLuint[1];
-
