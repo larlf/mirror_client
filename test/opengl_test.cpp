@@ -28,7 +28,6 @@ TEST_F(Test1, test2)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(512, 512);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
-	glutReshapeFunc(changeSize);
 
 	glutCreateWindow(&argv[0]);
 	if (glewInit())
@@ -36,6 +35,8 @@ TEST_F(Test1, test2)
 		std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	glutReshapeFunc(changeSize);
 
 	init();
 
@@ -220,6 +221,7 @@ void Test1::checkGLError(const std::string& info)
 void Test1::changeSize(GLsizei width, GLsizei height)
 {
 	LOG_DEBUG("Change Size : " << width << "," << height);
+	glViewport(0, 0, width, height);
 }
 
 GLuint *Test1::Buffers=new GLuint[1];
