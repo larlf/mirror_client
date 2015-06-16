@@ -17,7 +17,13 @@ set(core_src
 	core/mm_const.cc
 	core/mm_utils.h
 	core/mm_utils.cc
-	)
+	core/mm_app.h
+	core/mm_app.cc
+	core/mm_game.h
+	core/mm_game.cc
+	core/mm_opengl.h
+	core/mm_opengl.cc
+)
 link_directories(${PROJECT_SOURCE_DIR}/lib ${PROJECT_BINARY_DIR}/bin)
 include_directories(${PROJECT_SOURCE_DIR}/deps/win32/debug/include)
 add_library(mm_core STATIC ${core_src})	

@@ -1,5 +1,5 @@
 #include "opengl_test.h"
-
+#include <core/mm_opengl.h>
 
 //TEST_F(Test1, test1)
 //{
@@ -21,20 +21,7 @@
 
 TEST_F(Test1, test2)
 {
-	int argc = 0;
-	char* argv = {};
-	glutInit(&argc, &argv);
-
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(512, 512);
-	glutInitContextProfile(GLUT_CORE_PROFILE);
-
-	glutCreateWindow(&argv[0]);
-	if (glewInit())
-	{
-		std::cerr << "Unable to initialize GLEW ... exiting" << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	mm::OpenGLUtils::InitApp(512, 512);
 
 	glutReshapeFunc(changeSize);
 
