@@ -68,17 +68,18 @@ void Test1::init()
 		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		//ShaderInfo shaders[] = {
-		//	{ GL_VERTEX_SHADER, "../res/test.vert" },
-		//	{ GL_FRAGMENT_SHADER, "../res/test.frag" },
-		//	{ GL_NONE, NULL }
-		//};
-		//GLuint program = Test1::LoadShaders(shaders);
-		//glUseProgram(program);
-
+		ShaderInfo shaders[] = {
+			{ GL_VERTEX_SHADER, "../res/test.vert" },
+			{ GL_FRAGMENT_SHADER, "../res/test.frag" },
+			{ GL_NONE, NULL }
+		};
+		
+		//应用program
+		GLuint program = Test1::LoadShaders(shaders);
+		glUseProgram(program);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glEnableVertexAttribArray(0);
-
+		//glDisableVertexAttribArray(0);
 	}
 
 	glBindVertexArray(VAO2[3]);
@@ -166,71 +167,82 @@ GLuint Test1::LoadShaders(ShaderInfo* shaders)
 	if (shaders == NULL) { return 0; }
 
 	GLuint program = glCreateProgram();
-
 	ShaderInfo* entry = shaders;
-	while (entry->type != GL_NONE) {
+	while (entry->type != GL_NONE) 
+	{
 		GLuint shader = glCreateShader(entry->type);
 
 		entry->shader = shader;
 
+		//读取渲染器，并进行错误处理
 		const GLchar* source = ReadShader(entry->filename);
-		if (source == NULL) {
-			for (entry = shaders; entry->type != GL_NONE; ++entry) {
+		if (source == NULL) 
+		{
+			for (entry = shaders; entry->type != GL_NONE; ++entry) 
+			{
 				glDeleteShader(entry->shader);
 				entry->shader = 0;
 			}
-
 			return 0;
 		}
 
+		//读取代码
 		glShaderSource(shader, 1, &source, NULL);
 		delete[] source;
 
+		//编译
 		glCompileShader(shader);
 
+		//取得编译结果
 		GLint compiled;
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-		if (!compiled) {
+		if (!compiled) 
+		{
 #ifdef _DEBUG
+			//取编译错误的信息
 			GLsizei len;
 			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-
 			GLchar* log = new GLchar[len + 1];
 			glGetShaderInfoLog(shader, len, &len, log);
 			std::cerr << "Shader compilation failed: " << log << std::endl;
 			delete[] log;
-#endif /* DEBUG */
-
+#endif
 			return 0;
 		}
 
+		//关联到program
 		glAttachShader(program, shader);
 
 		++entry;
 	}
 
 #ifdef GL_VERSION_4_1
-	if (GLEW_VERSION_4_1) {
-		// glProgramParameteri( program, GL_PROGRAM_SEPARABLE, GL_TRUE );
+	if (GLEW_VERSION_4_1) 
+	{
+		glProgramParameteri( program, GL_PROGRAM_SEPARABLE, GL_TRUE );
 	}
-#endif /* GL_VERSION_4_1 */
+#endif
 
+	//连接程序
 	glLinkProgram(program);
 
+	//检查是否连接成功
 	GLint linked;
 	glGetProgramiv(program, GL_LINK_STATUS, &linked);
-	if (!linked) {
+	if (!linked) 
+	{
 #ifdef _DEBUG
 		GLsizei len;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
-
 		GLchar* log = new GLchar[len + 1];
 		glGetProgramInfoLog(program, len, &len, log);
 		std::cerr << "Shader linking failed: " << log << std::endl;
 		delete[] log;
-#endif /* DEBUG */
+#endif
 
-		for (entry = shaders; entry->type != GL_NONE; ++entry) {
+		//如果没有连接成功，销毁资源
+		for (entry = shaders; entry->type != GL_NONE; ++entry) 
+		{
 			glDeleteShader(entry->shader);
 			entry->shader = 0;
 		}
