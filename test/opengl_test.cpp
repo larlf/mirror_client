@@ -47,6 +47,15 @@ TEST_F(Test1, test2)
 
 void Test1::init()
 {
+	const GLubyte* byteGlVersion = glGetString(GL_VERSION);
+	const GLubyte* byteGlVendor = glGetString(GL_VENDOR);
+	const GLubyte* byteGlRenderer = glGetString(GL_RENDERER);
+	const GLubyte* byteSLVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "OpenGL version: " << byteGlVersion << std::endl;
+	std::cout << "GL_VENDOR: " << byteGlVendor << std::endl;
+	std::cout << "GL_RENDERER: " << byteGlRenderer << std::endl;
+	std::cout << "GLSL version: " << byteSLVersion << std::endl;
+
 	glGenVertexArrays(1, VAO1);
 	glGenVertexArrays(10, VAO2);
 	checkGLError("glGenVertexArrays()");
@@ -73,37 +82,10 @@ void Test1::init()
 			{ GL_FRAGMENT_SHADER, "../res/test.frag" },
 			{ GL_NONE, NULL }
 		};
-		
+
 		//Ó¦ÓÃprogram
 		GLuint program = Test1::LoadShaders(shaders);
 		glUseProgram(program);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-		glEnableVertexAttribArray(0);
-		//glDisableVertexAttribArray(0);
-	}
-
-	glBindVertexArray(VAO2[3]);
-	{
-		GLfloat vertices[6][2] = {
-			{ -1.50, -0.90 }, // Triangle 1
-			{ 0.85, -0.40 },
-			{ -0.90, 0.85 },
-			{ 0.90, -0.85 }, // Triangle 2
-			{ 0.90, 0.90 },
-			{ -0.85, 0.90 }
-		};
-		glGenBuffers(1, Buffer1);
-		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		//ShaderInfo shaders[] = {
-		//	{ GL_VERTEX_SHADER, "../res/test.vert" },
-		//	{ GL_FRAGMENT_SHADER, "../res/test.frag" },
-		//	{ GL_NONE, NULL }
-		//};
-		//GLuint program = Test1::LoadShaders(shaders);
-		//glUseProgram(program);
-
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glEnableVertexAttribArray(0);
 	}
