@@ -3,7 +3,7 @@
 #include <core/mm_utils.h>
 #include <windows.h>
 
-void mm::opengl::OpenGLUtils::InitApp(int width, int height)
+void mm::gl::OpenGLUtils::InitApp(int width, int height)
 {
 	int argc = 0;
 	char* argv = {};
@@ -21,13 +21,13 @@ void mm::opengl::OpenGLUtils::InitApp(int width, int height)
 	}
 }
 
-mm::opengl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
+mm::gl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
 {
 	this->text = mm::FileUtils::readTextFile(filename);
 	this->handler = glCreateShader(this->type);
 }
 
-mm::opengl::GLShader::~GLShader()
+mm::gl::GLShader::~GLShader()
 {
 	if (this->handler)
 	{
@@ -36,7 +36,7 @@ mm::opengl::GLShader::~GLShader()
 	}
 }
 
-void mm::opengl::GLShader::compile()
+void mm::gl::GLShader::compile()
 {
 	if (this->text.size() > 0)
 	{
@@ -60,16 +60,28 @@ void mm::opengl::GLShader::compile()
 	}
 }
 
-mm::opengl::VertexShader::VertexShader(const std::string& filename) : GLShader(GL_VERTEX_SHADER, filename)
+mm::gl::VertexShader::VertexShader(const std::string& filename) : GLShader(GL_VERTEX_SHADER, filename)
 {
 }
 
-mm::opengl::GLProgram::GLProgram()
+mm::gl::GLProgram::GLProgram() : handler(0), isCompiled(false)
 {
 	this->handler = glCreateProgram();
 }
 
-mm::opengl::GLProgram::~GLProgram()
+mm::gl::GLProgram::~GLProgram()
+{
+	this->shaders.clear();
+	glDeleteProgram(this->handler);
+}
+
+void mm::gl::GLProgram::attachShader(std::shared_ptr<GLShader> shader)
+{
+	this->shaders.push_back(shader);
+	glAttachShader(this->handler, shader->handler);
+}
+
+void mm::gl::GLProgram::compile()
 {
 
 }

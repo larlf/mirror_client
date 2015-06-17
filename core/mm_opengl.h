@@ -1,13 +1,15 @@
 #ifndef MM_OPENGL_H
 #define MM_OPENGL_H
 
+#include <vector>
+#include <memory>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <core/mm_utils.h>
 
 namespace mm
 {
-	namespace opengl
+	namespace gl
 	{
 		//着色器
 		class GLShader
@@ -33,9 +35,12 @@ namespace mm
 		{
 		public:
 			GLuint handler;  //句柄
+			bool isCompiled;
+			std::vector<std::shared_ptr<GLShader>> shaders;  //使用到的着色器
 
 			GLProgram();
 			~GLProgram();
+			void attachShader(std::shared_ptr<GLShader> shader);
 			void compile();
 		};
 
