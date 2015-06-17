@@ -10,23 +10,33 @@ namespace mm
 	namespace opengl
 	{
 		//着色器
-		class Shader
+		class GLShader
 		{
 		public:
 			GLenum type;  //着色器类型
-			GLuint shader;  //着色器
+			GLuint handler;  //着色器
 			std::string filename;  //着色器的文件路径
 			std::string text;  //着色器的文件内容
 
-			Shader(GLenum type, const std::string& filename);
-			virtual ~Shader();
+			GLShader(GLenum type, const std::string& filename);
+			virtual ~GLShader();
 			virtual void compile();
 		};
 
-		class VertexShader : public Shader
+		class VertexShader : public GLShader
 		{
 		public:
 			VertexShader(const std::string& filename);
+		};
+
+		class GLProgram
+		{
+		public:
+			GLuint handler;  //句柄
+
+			GLProgram();
+			~GLProgram();
+			void compile();
 		};
 
 		class OpenGLUtils

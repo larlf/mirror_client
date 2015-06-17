@@ -21,38 +21,55 @@ void mm::opengl::OpenGLUtils::InitApp(int width, int height)
 	}
 }
 
-mm::opengl::Shader::Shader(GLenum type, const std::string& filename) : type(type), filename(filename), shader(0)
+mm::opengl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
 {
 	this->text = mm::FileUtils::readTextFile(filename);
+	this->handler = glCreateShader(this->type);
 }
 
-mm::opengl::Shader::~Shader()
+mm::opengl::GLShader::~GLShader()
 {
-
-}
-
-void mm::opengl::Shader::compile()
-{
-	this->shader = glCreateShader(this->type);
-	const char* shaderText = this->text.c_str();
-	glShaderSource(this->shader, 1, &shaderText, NULL);
-	glCompileShader(shader);
-
-	//取得编译结果
-	GLint compiled;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-	if (!compiled)
+	if (this->handler)
 	{
-		//取编译错误的信息
-		GLsizei len;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-		GLchar* log = new GLchar[len + 1];
-		glGetShaderInfoLog(shader, len, &len, log);
-		LOG_ERROR("Shader Compile Error : "<<log);
-		delete[] log;
+		glDeleteShader(this->handler);
+		this->handler = 0;
 	}
 }
 
-mm::opengl::VertexShader::VertexShader(const std::string& filename) : Shader(GL_VERTEX_SHADER, filename)
+void mm::opengl::GLShader::compile()
 {
+	if (this->text.size() > 0)
+	{
+		const char* shaderText = this->text.c_str();
+		glShaderSource(this->handler, 1, &shaderText, NULL);
+		glCompileShader(handler);
+
+		//取得编译结果
+		GLint compiled;
+		glGetShaderiv(handler, GL_COMPILE_STATUS, &compiled);
+		if (!compiled)
+		{
+			//取编译错误的信息
+			GLsizei len;
+			glGetShaderiv(handler, GL_INFO_LOG_LENGTH, &len);
+			GLchar* log = new GLchar[len + 1];
+			glGetShaderInfoLog(handler, len, &len, log);
+			LOG_ERROR("Shader Compile Error : "<<log);
+			delete[] log;
+		}
+	}
+}
+
+mm::opengl::VertexShader::VertexShader(const std::string& filename) : GLShader(GL_VERTEX_SHADER, filename)
+{
+}
+
+mm::opengl::GLProgram::GLProgram()
+{
+	this->handler = glCreateProgram();
+}
+
+mm::opengl::GLProgram::~GLProgram()
+{
+
 }
