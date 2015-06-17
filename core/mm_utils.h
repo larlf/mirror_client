@@ -127,6 +127,13 @@ namespace mm
 		}
 	};
 
+	//文件处理相关的公用方法
+	class FileUtils
+	{
+	public:
+		static std::string readTextFile(const std::string& filename);
+	};
+
 
 	class Point
 	{

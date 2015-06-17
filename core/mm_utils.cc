@@ -246,3 +246,28 @@ std::string GameUtils::toSF(uint n, uint size)
 	delete[] s2;
 	return s3;
 }
+
+std::string mm::FileUtils::readTextFile(const std::string& filename)
+{
+	//读取并加载文件
+	std::string text;
+
+	std::ifstream fin(filename.c_str(), std::ios::in);
+	if (fin.is_open())
+	{
+		std::string line;
+
+		while (!fin.eof())
+		{
+			if (text.length() > 0) text.append("\n");
+			std::getline(fin, line);
+			text.append(line);
+		}
+
+		//关闭文件
+		fin.clear();
+		fin.close();
+	}
+
+	return text;
+}

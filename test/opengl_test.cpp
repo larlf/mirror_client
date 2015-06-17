@@ -21,7 +21,7 @@
 
 TEST_F(Test1, test2)
 {
-	mm::OpenGLUtils::InitApp(512, 512);
+	mm::opengl:: OpenGLUtils::InitApp(512, 512);
 
 	glutReshapeFunc(changeSize);
 
