@@ -1,6 +1,8 @@
 #include "opengl_test.h"
 #include <core/mm_opengl.h>
 
+using namespace mm::gl;
+
 //TEST_F(Test1, test1)
 //{
 //	int argc = 0;
@@ -64,6 +66,15 @@ void Test1::init()
 		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+		PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/test.vert"));
+		PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/test.frag"));
+		PTR<GLProgram> p1 = PTR<GLProgram>(new GLProgram());
+		p1->attachShader(s1);
+		p1->attachShader(s2);
+		p1->compile();
+		OpenGLUtils::useProgram(p1);
+
+		/*
 		ShaderInfo shaders[] = {
 			{ GL_VERTEX_SHADER, "../res/test.vert" },
 			{ GL_FRAGMENT_SHADER, "../res/test.frag" },
@@ -73,6 +84,8 @@ void Test1::init()
 		//”¶”√program
 		GLuint program = Test1::LoadShaders(shaders);
 		glUseProgram(program);
+		*/
+
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glEnableVertexAttribArray(0);
 	}

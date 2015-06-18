@@ -1,6 +1,8 @@
 #ifndef MM_CONST_H
 #define MM_CONST_H
 
+#define PTR std::shared_ptr
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -14,6 +14,9 @@ namespace mm
 		//着色器
 		class GLShader
 		{
+		protected:
+			virtual void compile();
+
 		public:
 			GLenum type;  //着色器类型
 			GLuint handler;  //着色器
@@ -22,7 +25,7 @@ namespace mm
 
 			GLShader(GLenum type, const std::string& filename);
 			virtual ~GLShader();
-			virtual void compile();
+			
 		};
 
 		class VertexShader : public GLShader
@@ -31,23 +34,34 @@ namespace mm
 			VertexShader(const std::string& filename);
 		};
 
+		//GL_FRAGMENT_SHADER
+		class FragmentShader : public GLShader
+		{
+		public:
+			FragmentShader(const std::string& filename);
+		};
+
 		class GLProgram
 		{
 		public:
 			GLuint handler;  //句柄
 			bool isCompiled;
-			std::vector<std::shared_ptr<GLShader>> shaders;  //使用到的着色器
+			std::vector<PTR<GLShader>> shaders;  //使用到的着色器
 
 			GLProgram();
 			~GLProgram();
-			void attachShader(std::shared_ptr<GLShader> shader);
+			void attachShader(PTR<GLShader> shader);
 			void compile();
 		};
 
 		class OpenGLUtils
 		{
+		private:
+			static PTR<GLProgram> CurrentProgram;
+
 		public:
 			static void InitApp(int width, int height);
+			static void useProgram(PTR<GLProgram> program);
 		};
 	}
 }

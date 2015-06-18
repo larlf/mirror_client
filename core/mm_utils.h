@@ -7,14 +7,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <memory>
 
 #ifdef WIN32
 #include <sys/timeb.h>
 #else
 #include <sys/time.h>
 #endif
-
-
 
 //下面是一些用于输出调试信息的宏
 #ifdef WIN32

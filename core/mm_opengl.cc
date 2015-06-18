@@ -3,6 +3,8 @@
 #include <core/mm_utils.h>
 #include <windows.h>
 
+PTR<mm::gl::GLProgram> mm::gl::OpenGLUtils::CurrentProgram;
+
 void mm::gl::OpenGLUtils::InitApp(int width, int height)
 {
 	int argc = 0;
@@ -12,6 +14,7 @@ void mm::gl::OpenGLUtils::InitApp(int width, int height)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(512, 512);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+	//glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
 	glutCreateWindow(&argv[0]);
 	if (glewInit())
@@ -21,10 +24,19 @@ void mm::gl::OpenGLUtils::InitApp(int width, int height)
 	}
 }
 
+void mm::gl::OpenGLUtils::useProgram(PTR<GLProgram> program)
+{
+	//锁定并使用Program
+	OpenGLUtils::CurrentProgram = program;
+	glUseProgram(program->handler);
+}
+
 mm::gl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
 {
 	this->text = mm::FileUtils::readTextFile(filename);
 	this->handler = glCreateShader(this->type);
+
+	this->compile();
 }
 
 mm::gl::GLShader::~GLShader()
@@ -64,7 +76,12 @@ mm::gl::VertexShader::VertexShader(const std::string& filename) : GLShader(GL_VE
 {
 }
 
-mm::gl::GLProgram::GLProgram() : handler(0), isCompiled(false)
+mm::gl::FragmentShader::FragmentShader(const std::string& filename) : GLShader(GL_FRAGMENT_SHADER, filename)
+{
+
+}
+
+mm::gl::GLProgram::GLProgram() : isCompiled(false)
 {
 	this->handler = glCreateProgram();
 }
@@ -75,7 +92,7 @@ mm::gl::GLProgram::~GLProgram()
 	glDeleteProgram(this->handler);
 }
 
-void mm::gl::GLProgram::attachShader(std::shared_ptr<GLShader> shader)
+void mm::gl::GLProgram::attachShader(PTR<GLShader> shader)
 {
 	this->shaders.push_back(shader);
 	glAttachShader(this->handler, shader->handler);
@@ -83,5 +100,19 @@ void mm::gl::GLProgram::attachShader(std::shared_ptr<GLShader> shader)
 
 void mm::gl::GLProgram::compile()
 {
+	//连接程序
+	glLinkProgram(this->handler);
 
+	//检查是否连接成功
+	GLint linked;
+	glGetProgramiv(this->handler, GL_LINK_STATUS, &linked);
+	if (!linked)
+	{
+		GLsizei len;
+		glGetProgramiv(this->handler, GL_INFO_LOG_LENGTH, &len);
+		GLchar* log = new GLchar[len + 1];
+		glGetProgramInfoLog(this->handler, len, &len, log);
+		LOG_ERROR("GLProgram Compile Error : " << log);
+		delete[] log;
+	}
 }
