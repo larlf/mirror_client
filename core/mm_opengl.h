@@ -41,8 +41,11 @@ namespace mm
 			FragmentShader(const std::string& filename);
 		};
 
-		class GLProgram
+		class GLProgram : public std::enable_shared_from_this<GLProgram>
 		{
+		private:
+			static PTR<GLProgram> CurrentProgram;
+			void compile();
 		public:
 			GLuint handler;  //句柄
 			bool isCompiled;
@@ -51,17 +54,15 @@ namespace mm
 			GLProgram();
 			~GLProgram();
 			void attachShader(PTR<GLShader> shader);
-			void compile();
+			
+			//设为当前的Program
+			void use();
 		};
 
 		class OpenGLUtils
 		{
-		private:
-			static PTR<GLProgram> CurrentProgram;
-
 		public:
 			static void InitApp(int width, int height);
-			static void useProgram(PTR<GLProgram> program);
 		};
 	}
 }

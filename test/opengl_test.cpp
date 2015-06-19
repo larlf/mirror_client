@@ -71,20 +71,7 @@ void Test1::init()
 		PTR<GLProgram> p1 = PTR<GLProgram>(new GLProgram());
 		p1->attachShader(s1);
 		p1->attachShader(s2);
-		p1->compile();
-		OpenGLUtils::useProgram(p1);
-
-		/*
-		ShaderInfo shaders[] = {
-			{ GL_VERTEX_SHADER, "../res/test.vert" },
-			{ GL_FRAGMENT_SHADER, "../res/test.frag" },
-			{ GL_NONE, NULL }
-		};
-
-		//应用program
-		GLuint program = Test1::LoadShaders(shaders);
-		glUseProgram(program);
-		*/
+		p1->use();
 
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glEnableVertexAttribArray(0);
@@ -116,123 +103,6 @@ void Test1::display()
 	glEnd();
 
 	glutSwapBuffers();
-}
-
-const GLchar* Test1::ReadShader(const char* filename)
-{
-	FILE* infile;
-	fopen_s(&infile, filename, "rb");
-	//infile=fopen("D:\\temp\\test.vert", "a");
-	std::cout << "File : " << infile << std::endl;
-
-	if (!infile) {
-		std::cerr << "Unable to open file '" << filename << "'" << std::endl;
-		return NULL;
-	}
-
-	fseek(infile, 0, SEEK_END);
-	int len = ftell(infile);
-	fseek(infile, 0, SEEK_SET);
-
-	GLchar* source = new GLchar[len + 1];
-
-	fread(source, 1, len, infile);
-	fclose(infile);
-
-	source[len] = 0;
-
-	return const_cast<const GLchar*>(source);
-}
-
-GLuint Test1::LoadShaders(ShaderInfo* shaders)
-{
-	if (shaders == NULL) { return 0; }
-
-	GLuint program = glCreateProgram();
-	ShaderInfo* entry = shaders;
-	while (entry->type != GL_NONE) 
-	{
-		GLuint shader = glCreateShader(entry->type);
-
-		entry->shader = shader;
-
-		//读取渲染器，并进行错误处理
-		const GLchar* source = ReadShader(entry->filename);
-		if (source == NULL) 
-		{
-			for (entry = shaders; entry->type != GL_NONE; ++entry) 
-			{
-				glDeleteShader(entry->shader);
-				entry->shader = 0;
-			}
-			return 0;
-		}
-
-		//读取代码
-		glShaderSource(shader, 1, &source, NULL);
-		delete[] source;
-
-		//编译
-		glCompileShader(shader);
-
-		//取得编译结果
-		GLint compiled;
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-		if (!compiled) 
-		{
-#ifdef _DEBUG
-			//取编译错误的信息
-			GLsizei len;
-			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-			GLchar* log = new GLchar[len + 1];
-			glGetShaderInfoLog(shader, len, &len, log);
-			std::cerr << "Shader compilation failed: " << log << std::endl;
-			delete[] log;
-#endif
-			return 0;
-		}
-
-		//关联到program
-		glAttachShader(program, shader);
-
-		++entry;
-	}
-
-#ifdef GL_VERSION_4_1
-	if (GLEW_VERSION_4_1) 
-	{
-		glProgramParameteri( program, GL_PROGRAM_SEPARABLE, GL_TRUE );
-	}
-#endif
-
-	//连接程序
-	glLinkProgram(program);
-
-	//检查是否连接成功
-	GLint linked;
-	glGetProgramiv(program, GL_LINK_STATUS, &linked);
-	if (!linked) 
-	{
-#ifdef _DEBUG
-		GLsizei len;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
-		GLchar* log = new GLchar[len + 1];
-		glGetProgramInfoLog(program, len, &len, log);
-		std::cerr << "Shader linking failed: " << log << std::endl;
-		delete[] log;
-#endif
-
-		//如果没有连接成功，销毁资源
-		for (entry = shaders; entry->type != GL_NONE; ++entry) 
-		{
-			glDeleteShader(entry->shader);
-			entry->shader = 0;
-		}
-
-		return 0;
-	}
-
-	return program;
 }
 
 void Test1::checkGLError(const std::string& info)

@@ -3,7 +3,7 @@
 #include <core/mm_utils.h>
 #include <windows.h>
 
-PTR<mm::gl::GLProgram> mm::gl::OpenGLUtils::CurrentProgram;
+PTR<mm::gl::GLProgram> mm::gl::GLProgram::CurrentProgram;
 
 void mm::gl::OpenGLUtils::InitApp(int width, int height)
 {
@@ -22,13 +22,6 @@ void mm::gl::OpenGLUtils::InitApp(int width, int height)
 		LOG_ERROR("Init GLEW Error!");
 		exit(EXIT_FAILURE);
 	}
-}
-
-void mm::gl::OpenGLUtils::useProgram(PTR<GLProgram> program)
-{
-	//Ëø¶¨²¢Ê¹ÓÃProgram
-	OpenGLUtils::CurrentProgram = program;
-	glUseProgram(program->handler);
 }
 
 mm::gl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
@@ -56,12 +49,12 @@ void mm::gl::GLShader::compile()
 		glShaderSource(this->handler, 1, &shaderText, NULL);
 		glCompileShader(handler);
 
-		//È¡µÃ±àÒë½á¹û
+		//å–å¾—ç¼–è¯‘ç»“æœ
 		GLint compiled;
 		glGetShaderiv(handler, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{
-			//È¡±àÒë´íÎóµÄĞÅÏ¢
+			//å–ç¼–è¯‘é”™è¯¯çš„ä¿¡æ¯
 			GLsizei len;
 			glGetShaderiv(handler, GL_INFO_LOG_LENGTH, &len);
 			GLchar* log = new GLchar[len + 1];
@@ -100,19 +93,36 @@ void mm::gl::GLProgram::attachShader(PTR<GLShader> shader)
 
 void mm::gl::GLProgram::compile()
 {
-	//Á¬½Ó³ÌĞò
-	glLinkProgram(this->handler);
-
-	//¼ì²éÊÇ·ñÁ¬½Ó³É¹¦
-	GLint linked;
-	glGetProgramiv(this->handler, GL_LINK_STATUS, &linked);
-	if (!linked)
+	if (!this->isCompiled)
 	{
-		GLsizei len;
-		glGetProgramiv(this->handler, GL_INFO_LOG_LENGTH, &len);
-		GLchar* log = new GLchar[len + 1];
-		glGetProgramInfoLog(this->handler, len, &len, log);
-		LOG_ERROR("GLProgram Compile Error : " << log);
-		delete[] log;
+		//è¿æ¥ç¨‹åº
+		glLinkProgram(this->handler);
+
+		//æ£€æŸ¥æ˜¯å¦è¿æ¥æˆåŠŸ
+		GLint linked;
+		glGetProgramiv(this->handler, GL_LINK_STATUS, &linked);
+		if (!linked)
+		{
+			GLsizei len;
+			glGetProgramiv(this->handler, GL_INFO_LOG_LENGTH, &len);
+			GLchar* log = new GLchar[len + 1];
+			glGetProgramInfoLog(this->handler, len, &len, log);
+			LOG_ERROR("GLProgram Compile Error : " << log);
+			delete[] log;
+		}
+		else
+		{
+			//ç¼–è¯‘æˆåŠŸ
+			this->isCompiled = true;
+		}
 	}
+}
+
+void mm::gl::GLProgram::use()
+{
+	this->compile();
+
+	//é”å®šå¹¶ä½¿ç”¨Program
+	GLProgram::CurrentProgram = this->shared_from_this();
+	glUseProgram(this->handler);
 }

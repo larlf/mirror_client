@@ -23,9 +23,6 @@ public:
 	static GLuint *Buffer1;
 	static GLuint *Buffer2;
 
-	static const GLchar* ReadShader(const char* filename);
-	static GLuint LoadShaders(ShaderInfo* shaders);
-
 	static void init();
 	static void display();
 	static void display2();
