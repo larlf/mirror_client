@@ -11,17 +11,17 @@ namespace mm
 {
 	namespace gl
 	{
-		//×ÅÉ«Æ÷
+		//ç€è‰²å™¨
 		class GLShader
 		{
 		protected:
 			virtual void compile();
 
 		public:
-			GLenum type;  //×ÅÉ«Æ÷ÀàĞÍ
-			GLuint handler;  //×ÅÉ«Æ÷
-			std::string filename;  //×ÅÉ«Æ÷µÄÎÄ¼şÂ·¾¶
-			std::string text;  //×ÅÉ«Æ÷µÄÎÄ¼şÄÚÈİ
+			GLenum type;  //ç€è‰²å™¨ç±»å‹
+			GLuint handler;  //ç€è‰²å™¨
+			std::string filename;  //ç€è‰²å™¨çš„æ–‡ä»¶è·¯å¾„
+			std::string text;  //ç€è‰²å™¨çš„æ–‡ä»¶å†…å®¹
 
 			GLShader(GLenum type, const std::string& filename);
 			virtual ~GLShader();
@@ -47,15 +47,15 @@ namespace mm
 			static PTR<GLProgram> CurrentProgram;
 			void compile();
 		public:
-			GLuint handler;  //¾ä±ú
+			GLuint handler;  //å¥æŸ„
 			bool isCompiled;
-			std::vector<PTR<GLShader>> shaders;  //Ê¹ÓÃµ½µÄ×ÅÉ«Æ÷
+			std::vector<PTR<GLShader>> shaders;  //ä½¿ç”¨åˆ°çš„ç€è‰²å™¨
 
 			GLProgram();
 			~GLProgram();
 			void attachShader(PTR<GLShader> shader);
 			
-			//ÉèÎªµ±Ç°µÄProgram
+			//è®¾ä¸ºå½“å‰çš„Program
 			void use();
 		};
 

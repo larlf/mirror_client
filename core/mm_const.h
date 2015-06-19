@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-	typedef unsigned char		BYTE;		///< ×Ö½ÚÊý¾ÝÀàÐÍ
-	typedef unsigned int		uint;		///< ÎÞ·ûºÅÕûÊý
-	typedef unsigned long long	uint64;		///< 64Î»µÄÎÞ·ûºÅÊý
-	typedef long long			int64;		///< 64Î»Êý×Ö
+	typedef unsigned char		BYTE;		///< å­—èŠ‚æ•°æ®ç±»åž‹
+	typedef unsigned int		uint;		///< æ— ç¬¦å·æ•´æ•°
+	typedef unsigned long long	uint64;		///< 64ä½çš„æ— ç¬¦å·æ•°
+	typedef long long			int64;		///< 64ä½æ•°å­—
 
 	static double PI = 3.14159265358979323846;	///< PI
 	static char HEX[] = "0123456789ABCDEF";
@@ -22,7 +22,7 @@ extern "C" {
 }
 #endif
 
-//CÓïÑÔÏÂÐèÒª´¦ÀíµÄÄÚÈÝ
+//Cè¯­è¨€ä¸‹éœ€è¦å¤„ç†çš„å†…å®¹
 #ifndef __cplusplus
 #if defined(WIN32)
 #define inline __inline
