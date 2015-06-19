@@ -3,23 +3,8 @@
 
 using namespace mm::gl;
 
-//TEST_F(Test1, test1)
-//{
-//	int argc = 0;
-//	char* argv = {};
-//	glutInit(&argc, &argv);
-//	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-//	glutInitWindowSize(800, 600);
-//	glutInitWindowPosition(100, 100);
-//	//glutInitContextVersion(4, 3);
-//	//glutInitContextProfile(GLUT_CORE_PROFILE);
-//	glutCreateWindow("Test");
-//
-//	Test1::init();
-//
-//	glutDisplayFunc(Test1::display);
-//	glutMainLoop();
-//}
+GLuint *Test1::Buffer1 = new GLuint[1];
+GLuint *Test1::VAO1 = new GLuint[1];
 
 TEST_F(Test1, test1)
 {
@@ -46,8 +31,7 @@ void Test1::init()
 	std::cout << "GLSL version: " << byteSLVersion << std::endl;
 
 	glGenVertexArrays(1, VAO1);
-	glGenVertexArrays(10, VAO2);
-	checkGLError("glGenVertexArrays()");
+	OpenGLUtils::CheckError("glGenVertexArrays()");
 
 	std::cout << "Num:" << 1 << std::endl;
 	std::cout << "ArraySize:" << sizeof(VAO1) << std::endl;
@@ -89,23 +73,10 @@ void Test1::display()
 	glutSwapBuffers();
 }
 
-void Test1::checkGLError(const std::string& info)
-{
-	GLenum errorNum;
-	while ((errorNum = glGetError()) != GL_NO_ERROR)
-	{
-		char* msg = (char*)gluErrorString(errorNum);
-		std::cout << "Error : " << msg << " @ " << info << std::endl;
-	}
-}
-
 void Test1::onResize(GLsizei width, GLsizei height)
 {
 	LOG_DEBUG("Change Size : " << width << "," << height);
 	glViewport(0, 0, width, height);
 }
 
-GLuint * Test1::Buffer2=new GLuint[10];
-GLuint * Test1::VAO2 = new GLuint[10];
-GLuint *Test1::Buffer1=new GLuint[1];
-GLuint *Test1::VAO1=new GLuint[1];
+

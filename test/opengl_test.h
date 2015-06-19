@@ -19,13 +19,10 @@ class Test1 : public testing::Test
 {
 public:
 	static GLuint *VAO1;
-	static GLuint *VAO2;
 	static GLuint *Buffer1;
-	static GLuint *Buffer2;
 
 	static void init();
 	static void display();
-	static void checkGLError(const std::string& info);
 	static void onResize(GLsizei width, GLsizei height);
 };
 

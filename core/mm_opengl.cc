@@ -24,6 +24,20 @@ void mm::gl::OpenGLUtils::InitApp(int width, int height)
 	}
 }
 
+int mm::gl::OpenGLUtils::CheckError(const std::string& info)
+{
+	GLenum errorNum;
+	int errorCount = 0;
+	while ((errorNum = glGetError()) != GL_NO_ERROR)
+	{
+		errorCount++;
+		char* msg = (char*)gluErrorString(errorNum);
+		LOG_ERROR("OpenGL Error : " << msg << " @ " << info);
+	}
+
+	return errorCount;
+}
+
 mm::gl::GLShader::GLShader(GLenum type, const std::string& filename) : type(type), filename(filename), handler(0)
 {
 	this->text = mm::FileUtils::readTextFile(filename);

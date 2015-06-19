@@ -63,6 +63,7 @@ namespace mm
 		{
 		public:
 			static void InitApp(int width, int height);
+			static int CheckError(const std::string& info);
 		};
 	}
 }
