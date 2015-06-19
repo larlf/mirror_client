@@ -12,5 +12,4 @@ out gl_PerVertex
 void main()
 {
 	gl_Position=vPosition;
-	gl_Position.x+=0.2;
 }

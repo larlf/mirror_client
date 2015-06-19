@@ -25,9 +25,8 @@ public:
 
 	static void init();
 	static void display();
-	static void display2();
 	static void checkGLError(const std::string& info);
-	static void changeSize(GLsizei width, GLsizei height);
+	static void onResize(GLsizei width, GLsizei height);
 };
 
 

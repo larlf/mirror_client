@@ -21,15 +21,15 @@ using namespace mm::gl;
 //	glutMainLoop();
 //}
 
-TEST_F(Test1, test2)
+TEST_F(Test1, test1)
 {
 	mm::gl:: OpenGLUtils::InitApp(512, 512);
 
-	glutReshapeFunc(changeSize);
+	glutReshapeFunc(Test1::onResize);
 
 	init();
 
-	glutDisplayFunc(display2);
+	glutDisplayFunc(Test1::display);
 	glutMainLoop();
 }
 
@@ -78,29 +78,13 @@ void Test1::init()
 	}
 }
 
-void Test1::display2()
+void Test1::display()
 {
-	glClearColor(0.5, 0.5, 0.5, 0.0);
+	glClearColor(0, 0, 0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBindVertexArray(VAO1[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glutSwapBuffers();
-}
-
-void Test1::display()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	std::cout << "run..." << std::endl;
-
-	glColor3f(1.0, 1.0, 1.0);
-	glBegin(GL_POLYGON);
-	glVertex3f(0.25, 0.25, 0.0);
-	glVertex3f(0.75, 0.25, 0.0);
-	glVertex3f(0.75, 0.75, 0.0);
-	glVertex3f(0.25, 0.75, 0.0);
-	glEnd();
 
 	glutSwapBuffers();
 }
@@ -115,7 +99,7 @@ void Test1::checkGLError(const std::string& info)
 	}
 }
 
-void Test1::changeSize(GLsizei width, GLsizei height)
+void Test1::onResize(GLsizei width, GLsizei height)
 {
 	LOG_DEBUG("Change Size : " << width << "," << height);
 	glViewport(0, 0, width, height);
