@@ -1,4 +1,4 @@
-#ifndef TEST1
+﻿#ifndef TEST1
 #define TEST1
 
 #include <windows.h>  

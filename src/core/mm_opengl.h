@@ -1,4 +1,4 @@
-#ifndef MM_OPENGL_H
+﻿#ifndef MM_OPENGL_H
 #define MM_OPENGL_H
 
 #include <vector>

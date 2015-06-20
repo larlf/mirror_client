@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 #include <gtest/gtest.h>
 #include "opengl_test.h"
 
