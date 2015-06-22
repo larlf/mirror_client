@@ -68,20 +68,92 @@ void Test1::display()
 	glutSwapBuffers();
 }
 
+GLuint Test2::ebo[1];
+GLuint Test2::vbo[1];
+GLuint Test2::vao[1];
+
 TEST_F(Test2, main)
 {
 	OpenGLUtils::InitApp(512, 512);
-	init();
-	glutDisplayFunc(display);
+	Test2::init();
+	glutDisplayFunc(Test2::display);
 	glutMainLoop();
 }
 
 void Test2::init()
 {
+	PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/test1.vert"));
+	PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/test1.frag"));
+	PTR<GLProgram> p1 = PTR<GLProgram>(new GLProgram());
+	p1->attachShader(s1);
+	p1->attachShader(s2);
+	p1->use();
 
+	// A single triangle
+	static const GLfloat vertex_positions[] =
+	{
+		-1.0f, -1.0f, 0.0f, 1.0f,
+		1.0f, -1.0f, 0.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 1.0f,
+	};
+
+	// Color for each vertex
+	static const GLfloat vertex_colors[] =
+	{
+		1.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, 1.0f, 1.0f
+	};
+
+	// Indices for the triangle strips
+	static const GLushort vertex_indices[] =
+	{
+		0, 1, 2
+	};
+
+	// Set up the element array buffer
+	glGenBuffers(1, ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertex_indices), vertex_indices, GL_STATIC_DRAW);
+
+	// Set up the vertex attributes
+	glGenVertexArrays(1, vao);
+	glBindVertexArray(vao[0]);
+
+	glGenBuffers(1, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions) + sizeof(vertex_colors), NULL, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex_positions), vertex_positions);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertex_positions), sizeof(vertex_colors), vertex_colors);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid *)sizeof(vertex_positions));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Test2::display()
 {
+	float t = float(GetTickCount() & 0x1FFF) / float(0x1FFF);
+	static float q = 0.0f;
 
+	glEnable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBindVertexArray(vao[0]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL);
+	glDrawElementsBaseVertex(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL, 1);
+
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 1);
+
+	glutSwapBuffers();
 }
+

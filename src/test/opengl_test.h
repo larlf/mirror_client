@@ -20,6 +20,10 @@ public:
 class Test2 : public testing::Test
 {
 public:
+	static GLuint vao[];
+	static GLuint vbo[];
+	static GLuint ebo[];
+
 	static void init();
 	static void display();
 };
