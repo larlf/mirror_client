@@ -8,13 +8,9 @@ GLuint *Test1::VAO1 = new GLuint[1];
 
 TEST_F(Test1, test1)
 {
-	mm::gl:: OpenGLUtils::InitApp(512, 512);
-
-	glutReshapeFunc(Test1::onResize);
-
+	OpenGLUtils::InitApp(512, 512);
 	init();
-
-	glutDisplayFunc(Test1::display);
+	glutDisplayFunc(display);
 	glutMainLoop();
 }
 
@@ -73,10 +69,29 @@ void Test1::display()
 	glutSwapBuffers();
 }
 
-void Test1::onResize(GLsizei width, GLsizei height)
+void Test1::init2()
 {
-	LOG_DEBUG("Change Size : " << width << "," << height);
-	glViewport(0, 0, width, height);
-}
+	GLfloat positions[] = {
+		-1.0, -1.0, 0, 1,
+		1, -1, 0, 1,
+		1, 1, 0, 1,
+		-1, 1, 0, 1
+	};
 
+	GLfloat colors[] = {
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1,
+		1, 1, 1
+	};
+
+	GLuint buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(colors), NULL, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(colors), colors);
+
+
+}
 

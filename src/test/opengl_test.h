@@ -22,8 +22,8 @@ public:
 	static GLuint *Buffer1;
 
 	static void init();
+	static void init2();
 	static void display();
-	static void onResize(GLsizei width, GLsizei height);
 };
 
 
