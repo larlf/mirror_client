@@ -3,17 +3,16 @@
 
 using namespace mm::gl;
 
-GLuint *Test1::Buffer1 = new GLuint[1];
-GLuint *Test1::VAO1 = new GLuint[1];
+GLuint *Test1::VBO = new GLuint[1];
+GLuint *Test1::VAO = new GLuint[1];
 
-TEST_F(Test1, test1)
+TEST_F(Test1, main)
 {
 	OpenGLUtils::InitApp(512, 512);
 	init();
 	glutDisplayFunc(display);
 	glutMainLoop();
 }
-
 
 void Test1::init()
 {
@@ -26,13 +25,13 @@ void Test1::init()
 	std::cout << "GL_RENDERER: " << byteGlRenderer << std::endl;
 	std::cout << "GLSL version: " << byteSLVersion << std::endl;
 
-	glGenVertexArrays(1, VAO1);
+	glGenVertexArrays(1, VAO);
 	OpenGLUtils::CheckError("glGenVertexArrays()");
 
 	std::cout << "Num:" << 1 << std::endl;
-	std::cout << "ArraySize:" << sizeof(VAO1) << std::endl;
+	std::cout << "ArraySize:" << sizeof(VAO) << std::endl;
 
-	glBindVertexArray(VAO1[0]);
+	glBindVertexArray(VAO[0]);
 	{
 		GLfloat vertices[6][2] = {
 			{ -0.90, -0.90 }, // Triangle 1
@@ -42,18 +41,18 @@ void Test1::init()
 			{ 0.90, 0.90 },
 			{ -0.85, 0.90 }
 		};
-		glGenBuffers(1, Buffer1);
-		glBindBuffer(GL_ARRAY_BUFFER, Buffer1[0]);
+		glGenBuffers(1, VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/test.vert"));
-		PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/test.frag"));
+		PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/test1.vert"));
+		PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/test1.frag"));
 		PTR<GLProgram> p1 = PTR<GLProgram>(new GLProgram());
 		p1->attachShader(s1);
 		p1->attachShader(s2);
 		p1->use();
 
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(0);
 	}
 }
@@ -63,35 +62,26 @@ void Test1::display()
 	glClearColor(0, 0, 0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glBindVertexArray(VAO1[0]);
+	glBindVertexArray(VAO[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glutSwapBuffers();
 }
 
-void Test1::init2()
+TEST_F(Test2, main)
 {
-	GLfloat positions[] = {
-		-1.0, -1.0, 0, 1,
-		1, -1, 0, 1,
-		1, 1, 0, 1,
-		-1, 1, 0, 1
-	};
+	OpenGLUtils::InitApp(512, 512);
+	init();
+	glutDisplayFunc(display);
+	glutMainLoop();
+}
 
-	GLfloat colors[] = {
-		1, 0, 0,
-		0, 1, 0,
-		0, 0, 1,
-		1, 1, 1
-	};
-
-	GLuint buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(colors), NULL, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(colors), colors);
-
+void Test2::init()
+{
 
 }
 
+void Test2::display()
+{
+
+}

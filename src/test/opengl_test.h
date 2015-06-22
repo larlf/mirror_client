@@ -7,22 +7,20 @@
 #include <GL/freeglut.h>
 #include <core/mm_utils.h>
 
-typedef struct {
-	GLenum       type;
-	const char*  filename;
-	GLuint       shader;
-} ShaderInfo;
-
-#define BUFFER_OFFSET(x)  ((const void*) (x))
-
 class Test1 : public testing::Test
 {
 public:
-	static GLuint *VAO1;
-	static GLuint *Buffer1;
+	static GLuint *VAO;
+	static GLuint *VBO;
 
 	static void init();
-	static void init2();
+	static void display();
+};
+
+class Test2 : public testing::Test
+{
+public:
+	static void init();
 	static void display();
 };
 
