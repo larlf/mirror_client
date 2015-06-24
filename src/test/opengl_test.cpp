@@ -92,10 +92,10 @@ void Test2::init()
 	// A single triangle
 	static const GLfloat vertex_positions[] =
 	{
-		-1.0f, -1.0f, 0.0f, 1.0f,
+		-.8, -.8, 0.0f, .8f,
 		1.0f, -1.0f, 0.0f, 1.0f,
-		-1.0f, 1.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f, 1.0f,
+		-1.0f, .8f, 0.0f, 1.0f,
+		-1.0f, .8f, 0.0f, 1.0f,
 	};
 
 	// Color for each vertex
@@ -149,10 +149,9 @@ void Test2::display()
 	glBindVertexArray(vao[0]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL);
-	glDrawElementsBaseVertex(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL, 1);
-
-	glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 1);
+	//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL);
+	//glDrawElementsBaseVertex(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL, 1);
+	//glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 1);
 
 	glutSwapBuffers();
 }
