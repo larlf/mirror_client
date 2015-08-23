@@ -72,13 +72,13 @@ GLuint Test2::ebo[1];
 GLuint Test2::vbo[1];
 GLuint Test2::vao[1];
 
-TEST_F(Test2, main)
-{
-	OpenGLUtils::InitApp(512, 512);
-	Test2::init();
-	glutDisplayFunc(Test2::display);
-	glutMainLoop();
-}
+//TEST_F(Test2, main)
+//{
+//	OpenGLUtils::InitApp(512, 512);
+//	Test2::init();
+//	glutDisplayFunc(Test2::display);
+//	glutMainLoop();
+//}
 
 void Test2::init()
 {

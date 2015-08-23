@@ -59,11 +59,24 @@ namespace mm
 			void use();
 		};
 
+		//需要进行渲染的对象
+		class RanderObj
+		{
+
+		};
+
 		class OpenGLUtils
 		{
 		public:
 			static void InitApp(int width, int height);
 			static int CheckError(const std::string& info);
+		};
+
+		//渲染总线
+		class OpenGLBus
+		{
+		public:
+			std::vector<RanderObj> Objs;  //需要渲染的对象队列
 		};
 	}
 }
