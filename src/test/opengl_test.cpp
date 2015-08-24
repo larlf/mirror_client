@@ -45,8 +45,8 @@ void Test1::init()
 		glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/test1.vert"));
-		PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/test1.frag"));
+		PTR<GLShader> s1 = PTR<GLShader>(new VertexShader("../res/defalut.vert"));
+		PTR<GLShader> s2 = PTR<GLShader>(new FragmentShader("../res/default.frag"));
 		PTR<GLProgram> p1 = PTR<GLProgram>(new GLProgram());
 		p1->attachShader(s1);
 		p1->attachShader(s2);
