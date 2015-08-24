@@ -20,6 +20,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(core_src
 	src/core/mm_const.h
 	src/core/mm_const.cc
+	src/core/mm_core.h
+	src/core/mm_core.cc
 	src/core/mm_utils.h
 	src/core/mm_utils.cc
 	src/core/mm_app.h

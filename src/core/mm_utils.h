@@ -1,5 +1,5 @@
-﻿#ifndef MIRROR_UI_UTILS
-#define MIRROR_UI_UTILS
+﻿#ifndef MM_UTILS
+#define MM_UTILS
 
 #include "mm_const.h"
 #include <time.h>
@@ -134,24 +134,24 @@ namespace mm
 	};
 
 
-	class Point
+	class IPoint
 	{
 	public:
-		long x;
-		long y;
-		Point() : x(0), y(0) {}
-		Point(long x, long y) : x(x), y(y) {}
+		int x;
+		int y;
+		IPoint() : x(0), y(0) {}
+		IPoint(int x, int y) : x(x), y(y) {}
 	};
 
-	class Rect
+	class IRect
 	{
 	public:
-		long x;
-		long y;
-		long w;
-		long h;
-		Rect() : x(0), y(0), w(0), h(0) {}
-		Rect(long x, long y, long w, long h) : x(x), y(y), w(w), h(h) {}
+		int x;
+		int y;
+		int w;
+		int h;
+		IRect() : x(0), y(0), w(0), h(0) {}
+		IRect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {}
 	};
 
 	class UIUtils
